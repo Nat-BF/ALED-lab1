@@ -94,9 +94,7 @@ public class EEGModel {
 	 * @return The new EEGModel.
 	 */
 	public EEGModel filter(Filter filter) {
-		// TODO
-		
-		return null;
+		return filter.applyFilter(this);
 	}
 
 	/**
@@ -141,7 +139,6 @@ public class EEGModel {
 		//1, 54, 234.7, 45
 		//(inice = i mod 256) + ", " + this.measurement.get(i)  + ", " + this.measurement.get(i+1))... numCanales =  
 		File archivo = new File (fileName);	
-		FileOutputStream fos = new FileOutputStream(archivo);
 		PrintStream ps = new PrintStream(archivo);
 		int i = 0;
 		while(i < this.measurements.size()) { //recorrer i medidas 
@@ -154,7 +151,7 @@ public class EEGModel {
 			i++;
 			ps.println(" ");
 		}
-		fos.close();
+		ps.close();
 
 		
 	}
@@ -279,9 +276,15 @@ public class EEGModel {
 		} else {
 			EEGModel eeg = new EEGModel();
 			eeg.createSyntheticData(1000);
-			// TODO
 			
+			 try {
+		            eeg.saveFile("Synthetic.txt");
+		        } catch (IOException e) {
+		            System.out.println("Error saving synthetic data.");
+		        }
 		}
+		
+		
 		
 	}
 }
