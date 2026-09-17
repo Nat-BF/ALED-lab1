@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -57,7 +58,11 @@ public class EEGModel {
 	 */
 	public EEGModel(Measurement[] measurements) {
 		// TODO
-		this.measurements = measurements;
+		//atributo es lista, argumento es array
+		for(int i=0 ; i < measurements.length ; i++) {
+			this.measurements.add(measurements[i]);
+		}
+		
 	}
 
 	/**
@@ -131,6 +136,26 @@ public class EEGModel {
 	 */
 	public void saveFile(String fileName) throws IOException {
 		// TODO
+		//FORMATO OpenBCI- Indice(medida), tantas columnas como canales, un valor por columna
+		//0, 36, 127.2 , 54
+		//1, 54, 234.7, 45
+		//(inice = i mod 256) + ", " + this.measurement.get(i)  + ", " + this.measurement.get(i+1))... numCanales =  
+		File archivo = new File (fileName);	
+		FileOutputStream fos = new FileOutputStream(archivo);
+		PrintStream ps = new PrintStream(archivo);
+		int i = 0;
+		while(i < this.measurements.size()) { //recorrer i medidas 
+			int numMedida = i % 256;
+			ps.print(numMedida + ",");
+			for(int j = 0 ; j < this.measurements.get(i).numChannels() ; j++) { //recorrer j canales por cada medida
+				float valor = this.measurements.get(i).getChannel(j);
+				ps.print(valor + ",");
+			}
+			i++;
+			ps.println(" ");
+		}
+		fos.close();
+
 		
 	}
 
@@ -257,5 +282,6 @@ public class EEGModel {
 			// TODO
 			
 		}
+		
 	}
 }
