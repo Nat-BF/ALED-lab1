@@ -280,7 +280,7 @@ public class EEGModel {
 			 try {
 		            eeg.saveFile("Synthetic.txt");
 		        } catch (IOException e) {
-		            System.out.println("Error saving synthetic data.");
+		            System.out.println("Error");
 		        }
 		}
 		
